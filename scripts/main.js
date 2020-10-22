@@ -1,7 +1,8 @@
 "use strict"
 
 document.addEventListener('DOMContentLoaded', ()=>{
-// Voer alles hieronder uit als de dom is geladen
+
+// Voer alles hieronder uit als de dom is geladen ----------------------------------------------------------------
 
 const jsonData = 'data/Survey_Information_Design_clean-parsed.json'; // locatie van de ruwe data
 
@@ -12,6 +13,11 @@ function fetchData() {
   .then( data => getOogKleuren(data) )
 }
 
+// ----------------------------------------------------------------------------------------------------------------
+
+
+
+// ----------------------------------------------------------------------------------------------------------------
 function check_hashtags( oogkleuren ) {
   // Check van de data welke al een hashtag hebben
   let hashtags = [];
@@ -30,7 +36,10 @@ function check_hashtags( oogkleuren ) {
 
   return [hashtags, geen_hashtags];
 }
+// ----------------------------------------------------------------------------------------------------------------
 
+
+// ----------------------------------------------------------------------------------------------------------------
 function verschoon_oogkleuren( oogkleuren ) {
 
   let nl_kleuren = {blauw:'#0000FF', groen:'#008000', bruin: '#835C3B', lichtblauw: '#add8e6'}
@@ -69,19 +78,25 @@ function verschoon_oogkleuren( oogkleuren ) {
 
   return opgeschoonde_kleuren;
 }
+// ----------------------------------------------------------------------------------------------------------------
 
+
+// ----------------------------------------------------------------------------------------------------------------
 function addToDom(nieuwe_kleuren) {
+
+  nieuwe_kleuren = nieuwe_kleuren.sort();
 
   const body = document.querySelector('body');
 
   nieuwe_kleuren.forEach(kleur => {
-    console.log(kleur);
     body.innerHTML += `<div style='background-color: ${ kleur };  width: 100px; height: 100px;'>${ kleur }</div`;
   });
 }
+// ----------------------------------------------------------------------------------------------------------------
 
+
+// ----------------------------------------------------------------------------------------------------------------
 function getOogKleuren(data){
-
 
   // stop alle kleuren in een lijst.
   let lijstOogkleuren = [];
@@ -97,9 +112,14 @@ function getOogKleuren(data){
   let nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
   nieuwe_kleuren = nieuwe_kleuren.split(',');
 
+  nieuwe_kleuren = nieuwe_kleuren.map((kleur)=>{
+    return kleur.toLowerCase();
+  });
+
   addToDom(nieuwe_kleuren);
   
 }
+// ----------------------------------------------------------------------------------------------------------------
 
 fetchData();
 
