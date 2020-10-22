@@ -107,7 +107,7 @@ function getOogKleuren(data){
   const slechte_kleuren = result_hashtag[1]; // de kleuren die nog moeten worden opgeschoond
   const opgeschoonde_kleuren = verschoon_oogkleuren(slechte_kleuren);
 
-  const nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
+  let nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
   nieuwe_kleuren = nieuwe_kleuren.split(',');
 
   nieuwe_kleuren = nieuwe_kleuren.map((kleur)=>{
