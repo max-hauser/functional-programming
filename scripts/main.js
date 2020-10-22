@@ -102,14 +102,12 @@ function getOogKleuren(data){
   let lijstOogkleuren = [];
   data.forEach(element => lijstOogkleuren.push((element.oogKleur))); 
 
-  check_hashtags(lijstOogkleuren); // check de kleuren op hashtag
-
-  let result_hashtag = check_hashtags(lijstOogkleuren); // het resultaat van de hashtag-check
-  let goede_kleuren = result_hashtag[0]; // de kleuren die al goed zijn
-  let slechte_kleuren = result_hashtag[1]; // de kleuren die nog moeten worden opgeschoond
+  const result_hashtag = check_hashtags(lijstOogkleuren); // het resultaat van de hashtag-check
+  const goede_kleuren = result_hashtag[0]; // de kleuren die al goed zijn
+  const slechte_kleuren = result_hashtag[1]; // de kleuren die nog moeten worden opgeschoond
   let opgeschoonde_kleuren = verschoon_oogkleuren(slechte_kleuren);
 
-  let nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
+  const nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
   nieuwe_kleuren = nieuwe_kleuren.split(',');
 
   nieuwe_kleuren = nieuwe_kleuren.map((kleur)=>{
