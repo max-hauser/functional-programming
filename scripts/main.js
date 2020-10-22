@@ -105,7 +105,7 @@ function getOogKleuren(data){
   const result_hashtag = check_hashtags(lijstOogkleuren); // het resultaat van de hashtag-check
   const goede_kleuren = result_hashtag[0]; // de kleuren die al goed zijn
   const slechte_kleuren = result_hashtag[1]; // de kleuren die nog moeten worden opgeschoond
-  let opgeschoonde_kleuren = verschoon_oogkleuren(slechte_kleuren);
+  const opgeschoonde_kleuren = verschoon_oogkleuren(slechte_kleuren);
 
   const nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
   nieuwe_kleuren = nieuwe_kleuren.split(',');
