@@ -1,124 +1,83 @@
-"use strict"
-
-document.addEventListener('DOMContentLoaded', ()=>{
-
-// Voer alles hieronder uit als de dom is geladen ----------------------------------------------------------------
-
 const jsonData = 'data/Survey_Information_Design_clean-parsed.json'; // locatie van de ruwe data
 
-function fetchData() {
+const fetchData = () => {
   // haal de data op
   fetch(jsonData)
-  .then( response => response.json() )
-  .then( data => getOogKleuren(data) )
+  .then(response => response.json())
+  .then(data => main(data))
 }
 
-// ----------------------------------------------------------------------------------------------------------------
+const filterGood = (subjectList) => {
+  const hashtags = subjectList.filter(subject => subject.charAt(0) == "#");
 
-
-
-// ----------------------------------------------------------------------------------------------------------------
-function check_hashtags( oogkleuren ) {
-  // Check van de data welke al een hashtag hebben
-  let hashtags = [];
-  let geen_hashtags = [];
-
-  oogkleuren.forEach(oogKleur =>{
-    // schoon de hashtags op zodat ze goed te gebruiken zijn.
-    if(oogKleur.charAt(0) == "#"){
-      oogKleur = oogKleur.replace(/\s/g, ''); // haal spaties weg
-      oogKleur = oogKleur.toLowerCase(); // zet alles naar lowercase
-      hashtags.push(oogKleur);
-    }else{
-      geen_hashtags.push(oogKleur);
-    }
+  const cleanup = hashtags.map(item => {
+    item = item.toLowerCase();
+    item = item.replace(/\s/g, '');
+    return item;
   });
 
-  return [hashtags, geen_hashtags];
+  return cleanup;
 }
-// ----------------------------------------------------------------------------------------------------------------
 
+const filterBad = (slechteData) => {
 
-// ----------------------------------------------------------------------------------------------------------------
-function verschoon_oogkleuren( oogkleuren ) {
+  // moeten alleen nog een # krijgen
+  const needHashtag = slechteData.filter(data => data.length == 6);
+  const needHashtagResult = needHashtag.map(item =>  item = "#" + item);
 
-  let nl_kleuren = {blauw:'#0000FF', groen:'#008000', bruin: '#835C3B', lichtblauw: '#add8e6'}
-  let opgeschoonde_kleuren = [];
+  // kleurwoorden aanpassen naar hex
+  const woordKleuren = {blauw:'#0000FF', groen:'#008000', bruin: '#835C3B', lichtblauw: '#add8e6'}
+  let woordKleurenResult = slechteData.map(item => woordKleuren[item.toLowerCase()]);
+  woordKleurenResult = woordKleurenResult.filter(e => e != null);
 
-  oogkleuren.forEach(kleur => {
-    kleur = kleur.toLowerCase();
+  // rgb to hex
+  let hexColor = slechteData.map(answer => {
+    if(answer.startsWith("rgb")){
 
-    // check eerst alleen of de kleur een hashtag nodig heeft
-    if (kleur.length == 6){
-      // voeg hashtag aan het begin toe, en stop'm in de nieuwe array
-      kleur = "#" + kleur;
-      opgeschoonde_kleuren.push(kleur)
-    }
-
-    if(typeof nl_kleuren[kleur] !== "undefined"){
-      // als de kleur in de nl_kleuren zit, dan zet je de matchende hexcode ook in de opgeschoonde_kleuren lijst
-      opgeschoonde_kleuren.push(nl_kleuren[kleur])
-    }
-
-    if(kleur.startsWith("rgb")){
-      // check voor rgb kleuren
-
-      kleur = kleur.replace(".", ","); // vervangt . voor ,
-      let rgb = kleur.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i); // zorgt dat je de cijfers kan pakken
+      answer = answer.replace(".", ","); // vervangt . voor ,
+      let rgb = answer.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i); // zorgt dat je de cijfers kan pakken
 
       // maakt van de rgb nummers een hex code
       let hex = "#" + ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) + 
                       ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-                      ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
-
-      opgeschoonde_kleuren.push(hex)
+                      ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);            
+      return hex;                        
     }
-
   });
 
-  return opgeschoonde_kleuren;
+  let hexColorResult = hexColor.filter(Boolean);
+  const result = needHashtagResult.concat(woordKleurenResult, hexColorResult);
+  return result;
 }
-// ----------------------------------------------------------------------------------------------------------------
 
-
-// ----------------------------------------------------------------------------------------------------------------
-function addToDom(nieuwe_kleuren) {
+const addToDom = (nieuwe_kleuren) => {
 
   nieuwe_kleuren = nieuwe_kleuren.sort();
-
   const body = document.querySelector('body');
-
   nieuwe_kleuren.forEach(kleur => {
     body.innerHTML += `<div style='background-color: ${ kleur };  width: 100px; height: 100px;'>${ kleur }</div`;
   });
 }
-// ----------------------------------------------------------------------------------------------------------------
 
 
-// ----------------------------------------------------------------------------------------------------------------
-function getOogKleuren(data){
+
+const main = (data) =>{
 
   // stop alle kleuren in een lijst.
-  let lijstOogkleuren = [];
-  data.forEach(element => lijstOogkleuren.push((element.oogKleur))); 
+  const subject = "oogKleur";
 
-  const result_hashtag = check_hashtags(lijstOogkleuren); // het resultaat van de hashtag-check
-  const goede_kleuren = result_hashtag[0]; // de kleuren die al goed zijn
-  const slechte_kleuren = result_hashtag[1]; // de kleuren die nog moeten worden opgeschoond
-  const opgeschoonde_kleuren = verschoon_oogkleuren(slechte_kleuren);
+  const subjectList = data.map(anwser => anwser[subject]);
+  filterGood(subjectList);
 
-  let nieuwe_kleuren = goede_kleuren + ',' + opgeschoonde_kleuren;
-  nieuwe_kleuren = nieuwe_kleuren.split(',');
+  const slechteData = subjectList.filter(subject => subject.charAt(0) != "#"); 
+  filterBad(slechteData);
 
-  nieuwe_kleuren = nieuwe_kleuren.map((kleur)=>{
-    return kleur.toLowerCase();
-  });
+  const badHex = filterBad(slechteData);
+  const goodHex = filterGood(subjectList);
 
-  addToDom(nieuwe_kleuren);
-  
+  const result = goodHex.concat(badHex);
+
+  addToDom(result);
 }
-// ----------------------------------------------------------------------------------------------------------------
 
 fetchData();
-
-});
