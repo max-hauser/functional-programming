@@ -27,39 +27,33 @@ const filterBad = (slechteData) => {
 
   // kleurwoorden aanpassen naar hex
   const woordKleuren = {blauw:'#0000FF', groen:'#008000', bruin: '#835C3B', lichtblauw: '#add8e6'}
-  let woordKleurenResult = slechteData.map(item => woordKleuren[item.toLowerCase()]);
-  woordKleurenResult = woordKleurenResult.filter(e => e != null);
+  const woordKleurenResult = slechteData.map(item => woordKleuren[item.toLowerCase()]).filter(e => e != null);
 
   // rgb to hex
-  let hexColor = slechteData.map(answer => {
+  const hexColor = slechteData.map(answer => {
     if(answer.startsWith("rgb")){
 
       answer = answer.replace(".", ","); // vervangt . voor ,
-      let rgb = answer.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i); // zorgt dat je de cijfers kan pakken
+      const rgb = answer.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i); // zorgt dat je de cijfers kan pakken
 
       // maakt van de rgb nummers een hex code
-      let hex = "#" + ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) + 
+      const hex = "#" + ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) + 
                       ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
                       ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);            
       return hex;                        
     }
   });
 
-  let hexColorResult = hexColor.filter(Boolean);
-  const result = needHashtagResult.concat(woordKleurenResult, hexColorResult);
-  return result;
+  const hexColorResult = hexColor.filter(Boolean);
+  return needHashtagResult.concat(woordKleurenResult, hexColorResult);
 }
 
 const addToDom = (nieuwe_kleuren) => {
-
-  nieuwe_kleuren = nieuwe_kleuren.sort();
   const body = document.querySelector('body');
-  nieuwe_kleuren.forEach(kleur => {
+  nieuwe_kleuren.sort().forEach(kleur => {
     body.innerHTML += `<div style='background-color: ${ kleur };  width: 100px; height: 100px;'>${ kleur }</div`;
   });
 }
-
-
 
 const main = (data) =>{
 
@@ -67,10 +61,10 @@ const main = (data) =>{
   const subject = "oogKleur";
 
   const subjectList = data.map(anwser => anwser[subject]);
-  filterGood(subjectList);
+  
 
   const slechteData = subjectList.filter(subject => subject.charAt(0) != "#"); 
-  filterBad(slechteData);
+  
 
   const badHex = filterBad(slechteData);
   const goodHex = filterGood(subjectList);
