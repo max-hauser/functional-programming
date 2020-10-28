@@ -10,3 +10,9 @@ Wat is de beste parkeerplek voor een getaway car?
 3. Het moet dicht bij een snelweg zijn
 4. Je moet ten alle tijden weg kunnen rijden
 5. De parkeerplek moet niet te groot zijn anders duurt het lang voor je kan ontsnappen
+
+### Datasets:
+1. https://opendata.rdw.nl/resource/r3rs-ibz5.json
+2. https://opendata.rdw.nl/resource/b3us-f26s.json
+3. https://opendata.rdw.nl/resource/figd-gux7.json
+4. https://opendata.rdw.nl/resource/t5pc-eb34.json
