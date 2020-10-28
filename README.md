@@ -4,6 +4,9 @@ Interactieve datavisualisatie over de auto in de stad
 ### Onderzoeksvraag:
 Wat is de beste parkeerplek voor een getaway car?
 
+### Verwachting:
+Ik verwacht dat de beste plekken eerder aan de rand van de stad zijn omdat daar meer garages zijn en dat de snelwegen dichterbij zijn.
+
 ### Criteria:
 1. Je betaald met cash of gratis
 2. Goudstaven zijn zwaar dus het moet een (grote) auto zijn
