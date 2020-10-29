@@ -1,21 +1,47 @@
-# functional-programming
-Interactieve datavisualisatie over de auto in de stad
+# Functional Programming
 
-### Onderzoeksvraag:
-Wat is de beste parkeerplek voor een getaway car?
+This repository contains my process of the @CMDA-TT Functional Programming course. During this course students are subjected to multiple ways of dealing with (external) datasets, how to clean them and prepare them for further use.
 
-### Verwachting:
-Ik verwacht dat de beste plekken eerder aan de rand van de stad zijn omdat daar meer garages zijn en dat de snelwegen dichterbij zijn.
+In an attempt to create a realistic environment, students are working with a critically acclaimed newspaper called 'De Volkskrant'. Students will do a preliminary research on datasets from the RDW. With the datasets in mind they'll create a topic which journalists could write an article about. 
 
-### Criteria:
-1. Je betaald met cash of gratis
-2. Goudstaven zijn zwaar dus het moet een (grote) auto zijn
-3. Het moet dicht bij een snelweg zijn
-4. Je moet ten alle tijden weg kunnen rijden
-5. De parkeerplek moet niet te groot zijn anders duurt het lang voor je kan ontsnappen
+## Research Question
 
-### Datasets:
-1. https://opendata.rdw.nl/resource/r3rs-ibz5.json
-2. https://opendata.rdw.nl/resource/b3us-f26s.json
-3. https://opendata.rdw.nl/resource/figd-gux7.json
-4. https://opendata.rdw.nl/resource/t5pc-eb34.json
+**Which garage is in the best for a getaway car in Amsterdam?**
+
+subquestions/criteria:
+- Which garages allow payment in cash?
+- Which garages allow big cars to enter?
+- Which garages are open at all times?
+- Which garages are in the best location with regards to getting out of the city?
+
+## expectations
+
+I expect that the most garages are at the edges of the city so there's a good change that most of my results will be away from the city center.
+
+## Highlighted Functional Pattern
+
+To give a glimpse of my code, I've selected an interesting piece to break-down and explain:
+
+``` javascript
+// filter out the areaid's if they occur 3 times in the array
+  let keyValues = {};
+
+  let canditAreas = cityData.map(area => {
+    keyValues[area] = keyValues[area] == null ? 1 : keyValues[area] + 1;
+  
+    if (keyValues[area] == 3) {
+      return area;
+    }
+  }).filter(area => area != null);
+```
+
+First a bit of context. Above this code I've collected areaid's (which are unique values) that correspond with locations of garages, from three different array's and put them all in one variable called ```javascript cityData```. Alright now on with the code example.
+
+To start we'll first create an object with the name keyValues: ```javascript let keyValues = {}```. Next we want to map the areaid's in the ```javascript keyValues```. To make sure not all the areaid are selected to be mapped we'll use a ES6 if else statement. If the keyValue amount is equal to 3 then the area will be returned. This creates an array filled with undefined and some correct areaid's. So lastly we'll filter out the undefined by only keeping the area if they're not null (which also includes undefined).
+
+## Acknowledgements
+
+- The teachers (they give very interesting lectures and adapt well with regards to the CoVid crisis/ wordking from home situation )
+- Nino Schelcher (we give each other feedback and tips during the entire project)
+- Stackoverflow (for the occational question)
+- MDN Web Docs (for deepdiving and really understanding how something works)
