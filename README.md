@@ -41,7 +41,7 @@ To start we'll first create an object with the name keyValues: ```javascript let
 
 ## Acknowledgements
 
-- The teachers (they give very interesting lectures and adapt well with regards to the CoVid crisis/ wordking from home situation )
+- The teachers (they give very interesting lectures and adapt well with regards to the CoVid crisis/ wordking from home situation)
 - Nino Schelcher (we give each other feedback and tips during the entire project)
 - Stackoverflow (for the occational question)
 - MDN Web Docs (for deepdiving and really understanding how something works)
