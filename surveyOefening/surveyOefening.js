@@ -32,7 +32,7 @@ function check_hashtags( oogkleuren ) {
 }
 
 function verschoon_oogkleuren( oogkleuren ) {
-  console.log(oogkleuren);
+  //console.log(oogkleuren);
 
   let nl_kleuren = {blauw:'#0000FF', groen:'#008000', bruin: '#835C3B'}
   let opgeschoonde_kleuren = [];
@@ -52,7 +52,7 @@ function verschoon_oogkleuren( oogkleuren ) {
     const tekstkleuren = Object.keys(nl_kleuren);
 
     if(tekstkleuren.includes(kleur)) {
-      console.log(kleur)
+      //console.log(kleur)
     }
 
   });
@@ -66,6 +66,8 @@ function getOogKleuren(data){
   // stop alle kleuren in een lijst.
   let lijstOogkleuren = [];
   data.forEach(element => lijstOogkleuren.push((element.oogKleur))); 
+
+  console.log(lijstOogkleuren);
 
   check_hashtags(lijstOogkleuren); // check de kleuren op hashtag
 
